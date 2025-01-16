@@ -191,13 +191,14 @@ def create_and_broadcast_transaction(locktime):
         Output(value=change_amount, address=change_address, network="testnet4")
     ]
 
-    # Loging UTXOs and verifying their inclusion
     log_with_timestamp("Creating inputs for the transaction.")
     inputs = []
     for utxo in utxos:
         log_with_timestamp(f"UTXO details: txid={utxo['txid']}, vout={utxo['vout']}, value={utxo['value']}")
-        inputs.append(Input(utxo['txid'], utxo['vout'], utxo['value']))  # Properly create input
+        # Pass the fetched address explicitly
+        inputs.append(Input(prev_txid=utxo['txid'], output_n=utxo['vout'], value=utxo['value'], address='tb1pey7vyy8r79g9c6vwa37n955hvw6p4380r3l4x4y53lkek5c8aejsc2mk92'))
     log_with_timestamp(f"Transaction inputs created: {inputs}")
+
 
     # Verify if any inputs were created
     if not inputs:
